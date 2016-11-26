@@ -1,6 +1,8 @@
 clc;
 clear all;
 pal = input('digite una palabra :','s'); 
+EbNo = input('digite la relacion señal a ruido:','s'); 
+EbNo = str2double(EbNo);
 nbits=8;
 binary=de2bi(double(pal),nbits);
 disp('     DEC                      BINARY              ')
@@ -98,11 +100,10 @@ y = qammod(xsym,M);
 
 ytx=y;
 
-EbNo = input('digite la relacion señal a ruido:','s'); 
-EbNo = str2double(EbNo);
 
-ynoisy=awgn(ytx,EbNo,'measured');
 
+%ynoisy=awgn(ytx,EbNo,'measured');
+ynoisy = awgn(ytx,EbNo);
 yrx=ynoisy;
 
 h=scatterplot(ytx);
@@ -110,5 +111,9 @@ hold on;
 scatterplot(yrx);
 hold off; grid on;
 
+% dqam = qamdemod(yrx,M);
+% hold on;
+% scatterplot(dqam);
+% hold off; grid on;
 
 
