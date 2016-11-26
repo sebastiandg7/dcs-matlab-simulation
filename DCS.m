@@ -100,11 +100,37 @@ y = qammod(xsym,M);
 
 ytx=y;
 
-
-
 %ynoisy=awgn(ytx,EbNo,'measured');
 ynoisy = awgn(ytx,EbNo);
 yrx=ynoisy;
+
+z = qamdemod(yrx,M);
+xrx=de2bi(z)
+[rows,cols]=size(xrx);
+menbin=zeros(1,rows*cols);
+pos=0;
+
+xrx=reshape(xrx',1,rows*cols);
+
+for i=1:2:length(xrx)
+    
+    a=xrx(1,i);
+    b=xrx(1,i+1);
+    
+    xrx(1,i)=b;
+    xrx(1,i+1)=a;
+    
+end
+% for i=0:rows-1
+%    
+%     for j=cols-1:0
+%    
+%         menbin(0, pos)=xrx(i,j);
+%         pos=pos+1;
+%     end
+%     
+% end
+
 
 h=scatterplot(ytx);
 hold on;
