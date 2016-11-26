@@ -9,8 +9,7 @@ This MATLAB project simulates the information transmission through a digital com
 ## Simulation Characteristics  
 * Information source: Text
 * Formatting: 8 bits ASCII character codification
-* Channel Coding: Cyclic code (7,4) - Generator Polynomial ![G(x) = x^3 + x^2 + 1](http://www.sciweavers.org/tex2img.php?eq=G%28x%29%20%3D%20x%5E3%20%2B%20x%5E2%20%2B%201&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
-[//]: # (G(x) = x^3 + x^2 + 1)
+* Channel Coding: Cyclic code (7,4) - Generator Polynomial G(x) = x^3 + x^2 + 1
 * Line Coding: Return Zero (RZ)
 * Digital Modulation: 4-QAM Passband modulation
 * Channel Noise: AWGN
