@@ -93,22 +93,13 @@ title(['Binary digital signal to be transmitted with bit period T = ',num2str(T*
 M=4;
 k=2;
 xsym =bi2de(reshape(mensaje,k,length(mensaje)/k).','left-msb');
-%stem(xsym(1:20));
+stem(xsym(1:20));
 y = qammod(xsym,M);
 
 ytx=y;
 
 EbNo = input('digite la relacion señal a ruido:','s'); 
 EbNo = str2double(EbNo);
-
-ynoisy=awgn(ytx,EbNo,'measured');
-
-yrx=ynoisy;
-
-h=scatterplot(ytx);
-hold on;
-scatterplot(yrx);
-hold off; grid on;
 
 
 
