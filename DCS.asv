@@ -227,14 +227,10 @@ for i=1:14:length(xrx)
     ascii(posi,7)=xrx(1,i+12);
     ascii(posi,8)=xrx(1,i+13);
     
-    posi=posi+1;
-    
 end
 
 deci=bi2de(ascii);
 
 disp(deci);
 
-a=[char(deci)];
-a=a.';
-disp(a);
+a=
