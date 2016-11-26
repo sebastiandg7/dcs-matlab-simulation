@@ -1,6 +1,8 @@
 clc;
 clear all;
 pal = input('digite una palabra :','s'); 
+EbNo = input('digite la relacion señal a ruido:','s'); 
+EbNo = str2double(EbNo);
 nbits=8;
 binary=de2bi(double(pal),nbits);
 disp('     DEC                      BINARY              ')
@@ -88,3 +90,30 @@ data2=data1(:);
 
 subplot(313);plot(t,data2,'b','LineWidth',1.8);xlabel('time (s)');ylabel('Amplitude');
 title(['Binary digital signal to be transmitted with bit period T = ',num2str(T*10^3),'(ms)']);grid on
+
+%4QAM
+M=4;
+k=2;
+xsym =bi2de(reshape(mensaje,k,length(mensaje)/k).','left-msb');
+%stem(xsym(1:20));
+y = qammod(xsym,M);
+
+ytx=y;
+
+
+
+%ynoisy=awgn(ytx,EbNo,'measured');
+ynoisy = awgn(ytx,EbNo);
+yrx=ynoisy;
+
+h=scatterplot(ytx);
+hold on;
+scatterplot(yrx);
+hold off; grid on;
+
+% dqam = qamdemod(yrx,M);
+% hold on;
+% scatterplot(dqam);
+% hold off; grid on;
+
+
