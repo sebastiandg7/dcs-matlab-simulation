@@ -3,6 +3,9 @@ clear all;
 pal = input('digite una palabra :','s'); 
 EbNo = input('digite la relacion señal a ruido:','s'); 
 EbNo = str2double(EbNo);
+Rb = input('digite la tasa de tx:','s');
+Rb= str2double(Rb);
+
 nbits=8;
 binary=de2bi(double(pal),nbits);
 disp('     DEC                      BINARY              ')
@@ -47,10 +50,10 @@ figure(1);subplot(311);stem(mensaje,'fill','r-');grid on;xlabel(['number of bits
 title(['bits to transmit = ', num2str(length(mensaje))]);ylabel('Amplitude');
 
 R=length(mensaje); %numero de bits a transmitir
-Tb=1/R;           %intervalo o periodo de bit
+Tb=1/Rb;           %intervalo o periodo de bit
 t=0:Tb:(R*Tb)-Tb; %vector tiempo, le quito un caracter porque empieza desde cero
 
-subplot(312);stem(t,mensaje,'b--','fill','LineWidth',1.8);axis([0 1 0 1.1]);xlabel('time (s)');ylabel('Amplitude');
+subplot(312);stem(t,mensaje,'b--','fill','LineWidth',1.8);xlabel('time (s)');ylabel('Amplitude');
 title(['Discrete signal with bit period Tb = ', num2str(Tb*10^3),'(ms)']);grid on
 
 
