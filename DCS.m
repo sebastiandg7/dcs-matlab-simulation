@@ -22,7 +22,7 @@ for i=1:4:rows*columns
    
    c=conv(a,b);
    
-   g=[1 1 0 1]; %polinomio generador
+   g=[1 1 0 1]; %polinomio generadorº
    [x,r]=deconv(c,g); %division entre el generador
    
    
@@ -45,7 +45,7 @@ end
 disp(mensaje);
 rows = size (mensaje,1); columns=size(mensaje,2);
 mensaje= reshape(mensaje',1,rows*columns); %convierte la matriz en un vector fila (1 row, row*columns)
-
+largo=length(mensaje);
 figure(1);subplot(311);stem(mensaje,'fill','r-');grid on;xlabel(['number of bits = ',num2str(length(mensaje))]);
 title(['bits to transmit = ', num2str(length(mensaje))]);ylabel('Amplitude');
 
@@ -140,7 +140,7 @@ hold off; grid on;
 
 %deciclico
 %disp(xrx);
-
+contador=0;
 for i=1:7:length(xrx)
     
     a=[xrx(1,i+6) xrx(1,i+5) xrx(1,i+4) xrx(1,i+3) xrx(1,i+2) xrx(1,i+1) xrx(1,i)];
@@ -159,6 +159,7 @@ for i=1:7:length(xrx)
     
     
     if((r(1,1)~=0)||(r(1,2)~=0)||(r(1,3)~=0)||(r(1,4)~=0)||(r(1,5)~=0)||(r(1,6)~=0)||(r(1,7)~=0))
+       contador=contador+1;
         if((r(1,1)==0)&&(r(1,2)==0)&&(r(1,3)==0)&&(r(1,4)==0)&&(r(1,5)==0)&&(r(1,6)==0)&&(r(1,7)==1))
             disp('error1');
             if(xrx(1,i)==1)
@@ -210,7 +211,7 @@ for i=1:7:length(xrx)
                  xrx(1,i+6)=1;
             end
         else
-            disp('error no corregible');
+            %no se puede corregir
             
         end
         
@@ -244,3 +245,7 @@ disp(deci);
 a=[char(deci)];
 a=a.';
 disp(a);
+
+disp(contador/largo);
+disp(k*(contador/largo));
+
