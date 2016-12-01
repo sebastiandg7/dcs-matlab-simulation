@@ -1,38 +1,29 @@
 clc;
 clear all;
-%% Ask for user input
-pal = input('Enter a word to send :','s'); 
-EbNo = input('Enter the SNR to be used:','s'); 
+pal = input('digite una palabra :','s'); 
+EbNo = input('digite la relacion señal a ruido:','s'); 
 EbNo = str2double(EbNo);
-Rb = input('Enter the transmission rate (bps) :','s');
+Rb = input('digite la tasa de tx:','s');
 Rb= str2double(Rb);
 
-%% Source coding
 nbits=8;
 binary=de2bi(double(pal),nbits);
 disp('     DEC                      BINARY              ')
 disp([double(pal)',binary]);
 
-
 rows = size (binary,1); columns=size(binary,2);
-binary= reshape(binary',1,rows*columns); %Convert matrix in a row vector. 
+binary= reshape(binary',1,rows*columns); %convierte la matriz en un vector fila 
 mensaje=zeros(rows*2,7);
 j=1;
-%% Channel coding
 for i=1:4:rows*columns
    
    a=[binary(1,i+3) binary(1,i+2) binary(1,i+1) binary(1,i)];
-   b=[1 0 0 0];%polynomial x^3
+   b=[1 0 0 0];%polinomio x^3
    
    c=conv(a,b);
    
-<<<<<<< HEAD:scripts/DCS_Simulation.m
-   g=[1 1 0 1]; %Generator polynomial G(x)
-   [x,r]=deconv(c,g); %Divide into G(x)
-=======
    g=[1 1 0 1]; %polinomio generadorº
    [x,r]=deconv(c,g); %division entre el generador
->>>>>>> qam:DCS.m
    
    
    for d=1:7
@@ -53,13 +44,8 @@ for i=1:4:rows*columns
 end
 disp(mensaje);
 rows = size (mensaje,1); columns=size(mensaje,2);
-<<<<<<< HEAD:scripts/DCS_Simulation.m
-mensaje= reshape(mensaje',1,rows*columns); %Convert matrix into row vector (1 row, row*columns)
-
-=======
 mensaje= reshape(mensaje',1,rows*columns); %convierte la matriz en un vector fila (1 row, row*columns)
 largo=length(mensaje);
->>>>>>> qam:DCS.m
 figure(1);subplot(311);stem(mensaje,'fill','r-');grid on;xlabel(['number of bits = ',num2str(length(mensaje))]);
 title(['bits to transmit = ', num2str(length(mensaje))]);ylabel('Amplitude');
 
@@ -107,7 +93,7 @@ data2=data1(:);
 
 subplot(313);plot(t,data2,'b','LineWidth',1.8);xlabel('time (s)');ylabel('Amplitude');
 title(['Binary digital signal to be transmitted with bit period T = ',num2str(T*10^3),'(ms)']);grid on
-%% Digital modulation
+
 %4QAM
 M=4;
 k=2;
@@ -117,15 +103,10 @@ y = qammod(xsym,M);
 
 ytx=y;
 
-%% Channel
 %ynoisy=awgn(ytx,EbNo,'measured');
 ynoisy = awgn(ytx,EbNo);
-
-%% Data reception
-
 yrx=ynoisy;
 
-%% Digital demodulation
 z = qamdemod(yrx,M);
 xrx=de2bi(z);
 [rows,cols]=size(xrx);
@@ -151,9 +132,6 @@ scatterplot(yrx);
 hold off; grid on;
 
 
-<<<<<<< HEAD:scripts/DCS_Simulation.m
-%% Channel decoding
-=======
 
 % dqam = qamdemod(yrx,M);
 % hold on;
@@ -163,7 +141,6 @@ hold off; grid on;
 %deciclico
 %disp(xrx);
 contador=0;
->>>>>>> qam:DCS.m
 for i=1:7:length(xrx)
     
     a=[xrx(1,i+6) xrx(1,i+5) xrx(1,i+4) xrx(1,i+3) xrx(1,i+2) xrx(1,i+1) xrx(1,i)];
@@ -260,7 +237,7 @@ for i=1:14:length(xrx)
     posi=posi+1;
     
 end
-%% Source decoding
+
 deci=bi2de(ascii);
 
 disp(deci);
