@@ -5,7 +5,7 @@ SNR_DB=-5:0.01:20;
 snr= 10.^(SNR_DB/10); %lineaización
 argum = sqrt((3/(M-1))*snr);
 Q = erfc(argum)/sqrt(2); 
-Psc = 2*(1-(1/M))*Q;
+Psc = 2*(1-(1/sqrt(M)))*Q;
 Ps = 1-(1-Psc).^2;
 Pb=Psc/(k/2); 
 

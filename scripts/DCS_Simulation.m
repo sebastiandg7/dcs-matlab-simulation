@@ -45,6 +45,7 @@ end
 disp(mensaje);
 rows = size (mensaje,1); columns=size(mensaje,2);
 mensaje= reshape(mensaje',1,rows*columns); %convierte la matriz en un vector fila (1 row, row*columns)
+transmitidos=mensaje;
 largo=length(mensaje);
 figure(1);subplot(311);stem(mensaje,'fill','r-');grid on;xlabel(['number of bits = ',num2str(length(mensaje))]);
 title(['bits to transmit = ', num2str(length(mensaje))]);ylabel('Amplitude');
@@ -131,94 +132,18 @@ hold on;
 scatterplot(yrx);
 hold off; grid on;
 
-
-
-% dqam = qamdemod(yrx,M);
-% hold on;
-% scatterplot(dqam);
-% hold off; grid on;
-
-%deciclico
-%disp(xrx);
 contador=0;
-for i=1:7:length(xrx)
+for i=1:length(xrx)
     
-    a=[xrx(1,i+6) xrx(1,i+5) xrx(1,i+4) xrx(1,i+3) xrx(1,i+2) xrx(1,i+1) xrx(1,i)];
-    g=[1 1 0 1];
-    
-    [x,r]=deconv(a,g);
-   
-    
-    for d=1:7
-       if mod(r(1,d),2)== 0
-           r(1,d)=0;
-       else
-           r(1,d)=1;
-       end 
+    if(xrx(1,i)~=transmitidos(1,i))
+        contador=contador+1;
     end
     
-    
-    if((r(1,1)~=0)||(r(1,2)~=0)||(r(1,3)~=0)||(r(1,4)~=0)||(r(1,5)~=0)||(r(1,6)~=0)||(r(1,7)~=0))
-       contador=contador+1;
-        if((r(1,1)==0)&&(r(1,2)==0)&&(r(1,3)==0)&&(r(1,4)==0)&&(r(1,5)==0)&&(r(1,6)==0)&&(r(1,7)==1))
-            disp('error1');
-            if(xrx(1,i)==1)
-                xrx(1,i)=0;
-            else
-                 xrx(1,i)=1;
-            end
-            
-        elseif ((r(1,1)==0)&&(r(1,2)==0)&&(r(1,3)==0)&&(r(1,4)==0)&&(r(1,5)==0)&&(r(1,6)==1)&&(r(1,7)==0))
-            disp('error2');
-            if(xrx(1,i+1)==1)
-                xrx(1,i+1)=0;
-            else
-                 xrx(1,i+1)=1;
-            end
-        elseif ((r(1,1)==0)&&(r(1,2)==0)&&(r(1,3)==0)&&(r(1,4)==0)&&(r(1,5)==1)&&(r(1,6)==0)&&(r(1,7)==0))
-            disp('error3');
-            if(xrx(1,i+2)==1)
-                xrx(1,i+2)=0;
-            else
-                 xrx(1,i+2)=1;
-            end
-        elseif ((r(1,1)==0)&&(r(1,2)==0)&&(r(1,3)==0)&&(r(1,4)==0)&&(r(1,5)==0)&&(r(1,6)==1)&&(r(1,7)==1))
-            disp('error4');
-            if(xrx(1,i+3)==1)
-                xrx(1,i+3)=0;
-            else
-                 xrx(1,i+3)=1;
-            end
-        elseif ((r(1,1)==0)&&(r(1,2)==0)&&(r(1,3)==0)&&(r(1,4)==0)&&(r(1,5)==1)&&(r(1,6)==0)&&(r(1,7)==1))
-            disp('error5');
-            if(xrx(1,i+4)==1)
-                xrx(1,i+4)=0;
-            else
-                 xrx(1,i+4)=1;
-            end
-        elseif ((r(1,1)==0)&&(r(1,2)==0)&&(r(1,3)==0)&&(r(1,4)==0)&&(r(1,5)==1)&&(r(1,6)==1)&&(r(1,7)==1))
-            disp('error6');
-            if(xrx(1,i+5)==1)
-                xrx(1,i+5)=0;
-            else
-                 xrx(1,i+5)=1;
-            end
-        elseif ((r(1,1)==0)&&(r(1,2)==0)&&(r(1,3)==0)&&(r(1,4)==0)&&(r(1,5)==1)&&(r(1,6)==1)&&(r(1,7)==0))
-            disp('error7');
-            if(xrx(1,i+6)==1)
-                xrx(1,i+6)=0;
-            else
-                 xrx(1,i+6)=1;
-            end
-        else
-            %no se puede corregir
-            
-        end
-        
-        
-    end 
-    
-end 
+end
+
+%pasando los bits a palabras
+
+
 
 ascii=zeros((length(xrx)/7)/2,8);
 
@@ -246,6 +171,8 @@ a=[char(deci)];
 a=a.';
 disp(a);
 
+%ber medido
+
 disp(contador/largo);
-disp(k*(contador/largo));
+
 
