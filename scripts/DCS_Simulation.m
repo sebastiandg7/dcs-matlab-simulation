@@ -4,11 +4,8 @@ pal = input('digite una palabra :','s');
 Rb = input('digite la tasa de tx:','s');
 ber=zeros(1,120);
 
-indice=1;
-for i=0.1:0.1:12 
-
-EbNo = i;
-
+EbNo = input('Ingrese la SNR:','s');
+EbNo = str2double(EbNo);
 Rb= str2double(Rb);
 
 nbits=8;
@@ -105,13 +102,20 @@ M=4;
 k=2;
 xsym =bi2de(reshape(mensaje,k,length(mensaje)/k).','left-msb');
 %stem(xsym(1:20));
-y = qammod(xsym,M);
+y = qammod(xsym,M,'InputType','integer','UnitAveragePower',true);
 
 ytx=y;
 
 %ynoisy=awgn(ytx,EbNo,'measured');
 ynoisy = awgn(ytx,EbNo);
 yrx=ynoisy;
+
+%% Diagramas de constelacion
+ct = comm.ConstellationDiagram('ShowReferenceConstellation',false);
+step(ct,ytx);
+
+cd = comm.ConstellationDiagram('ShowReferenceConstellation',false);
+step(cd,yrx);
 
 z = qamdemod(yrx,M);
 xrx=de2bi(z);
@@ -178,10 +182,6 @@ a=a.';
 
 %ber medido
 
-ber(1,indice)=contador/largo;
-
-indice=indice+1;
-end 
 t=[0:0.1:12-0.1];
 
 semilogy(t,ber);

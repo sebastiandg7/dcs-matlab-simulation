@@ -5,7 +5,7 @@ snr= 10.^(SNR_DB/10);
 
 M = 4; % Alphabet size
 EbN0_min=0;EbN0_max=10;step=0.5;
-SNR=[];SER=[];
+SNR=[];BER=[];
 for EbN0 = EbN0_min:step:EbN0_max
 SNR_dB=EbN0 + 3; %for QPSK Eb/N0=0.5*Es/N0=0.5*SNR
 %x = randi(1000000,1,M);
@@ -14,11 +14,11 @@ ynoisy = awgn(y,SNR_dB,'measured');
 z=demodulate(modem.qamdemod(M),ynoisy);
 [num,rt]= symerr(mensaje,z);
 SNR=[SNR EbN0];
-SER=[SER rt];
+BER=[BER rt];
 end;
 
 EbNo = 0:0.5:10;
-[ber, ser] = berawgn(EbNo,'qam',M);
-semilogy(SNR,SER,'-ro',SNR,ser,'-bo');grid;title('Symbol error rate for QAM over AWGN');
-legend('BEP Simulado','BEP teorico QAM');
-xlabel('E_b/N_0');ylabel('SER');
+[ber, BER] = berawgn(EbNo,'qam',M);
+semilogy(SNR,BER,'-ro',SNR,BER,'-bo');grid;title('Bit error rate for QAM over AWGN');
+legend('BER Simulado','BEP teorico QAM');
+xlabel('SNR (dB)');ylabel('Bit Error Probability');
