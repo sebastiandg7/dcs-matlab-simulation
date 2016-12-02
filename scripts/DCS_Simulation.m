@@ -1,15 +1,20 @@
 clc;
 clear all;
 pal = input('digite una palabra :','s'); 
-EbNo = input('digite la relacion señal a ruido:','s'); 
-EbNo = str2double(EbNo);
 Rb = input('digite la tasa de tx:','s');
+ber=zeros(1,120);
+
+indice=1;
+for i=0.1:0.1:12 
+
+EbNo = i;
+
 Rb= str2double(Rb);
 
 nbits=8;
 binary=de2bi(double(pal),nbits);
-disp('     DEC                      BINARY              ')
-disp([double(pal)',binary]);
+%disp('     DEC                      BINARY              ')
+%disp([double(pal)',binary]);
 
 rows = size (binary,1); columns=size(binary,2);
 binary= reshape(binary',1,rows*columns); %convierte la matriz en un vector fila 
@@ -42,20 +47,20 @@ for i=1:4:rows*columns
    j=j+1;
 
 end
-disp(mensaje);
+%disp(mensaje);
 rows = size (mensaje,1); columns=size(mensaje,2);
 mensaje= reshape(mensaje',1,rows*columns); %convierte la matriz en un vector fila (1 row, row*columns)
 transmitidos=mensaje;
 largo=length(mensaje);
-figure(1);subplot(311);stem(mensaje,'fill','r-');grid on;xlabel(['number of bits = ',num2str(length(mensaje))]);
-title(['bits to transmit = ', num2str(length(mensaje))]);ylabel('Amplitude');
+% figure(1);subplot(311);stem(mensaje,'fill','r-');grid on;xlabel(['number of bits = ',num2str(length(mensaje))]);
+% title(['bits to transmit = ', num2str(length(mensaje))]);ylabel('Amplitude');
 
 R=length(mensaje); %numero de bits a transmitir
 Tb=1/Rb;           %intervalo o periodo de bit
 t=0:Tb:(R*Tb)-Tb; %vector tiempo, le quito un caracter porque empieza desde cero
 
-subplot(312);stem(t,mensaje,'b--','fill','LineWidth',1.8);xlabel('time (s)');ylabel('Amplitude');
-title(['Discrete signal with bit period Tb = ', num2str(Tb*10^3),'(ms)']);grid on
+% subplot(312);stem(t,mensaje,'b--','fill','LineWidth',1.8);xlabel('time (s)');ylabel('Amplitude');
+% title(['Discrete signal with bit period Tb = ', num2str(Tb*10^3),'(ms)']);grid on
 
 
 
@@ -92,8 +97,8 @@ data1=ones(T/Ts,1)*data;
 data2=data1(:);
 
 
-subplot(313);plot(t,data2,'b','LineWidth',1.8);xlabel('time (s)');ylabel('Amplitude');
-title(['Binary digital signal to be transmitted with bit period T = ',num2str(T*10^3),'(ms)']);grid on
+% subplot(313);plot(t,data2,'b','LineWidth',1.8);xlabel('time (s)');ylabel('Amplitude');
+% title(['Binary digital signal to be transmitted with bit period T = ',num2str(T*10^3),'(ms)']);grid on
 
 %4QAM
 M=4;
@@ -127,10 +132,10 @@ for i=1:2:length(xrx)
 end
 
 
-h=scatterplot(ytx);
-hold on;
-scatterplot(yrx);
-hold off; grid on;
+% h=scatterplot(ytx);
+% hold on;
+% scatterplot(yrx);
+% hold off; grid on;
 
 contador=0;
 for i=1:length(xrx)
@@ -165,14 +170,21 @@ end
 
 deci=bi2de(ascii);
 
-disp(deci);
+%disp(deci);
 
 a=[char(deci)];
 a=a.';
-disp(a);
+%disp(a);
 
 %ber medido
 
-disp(contador/largo);
+ber(1,indice)=contador/largo;
+
+indice=indice+1;
+end 
+t=[0:0.1:12-0.1];
+
+semilogy(t,ber);
 
 
+bep_vs_ber(mensaje);
