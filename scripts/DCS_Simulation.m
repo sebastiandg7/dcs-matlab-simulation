@@ -187,4 +187,4 @@ t=[0:0.1:12-0.1];
 semilogy(t,ber);
 
 
-bep_vs_ber(mensaje);
+bep_vs_ber(mensaje,EbNo);
